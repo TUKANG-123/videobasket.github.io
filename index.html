@@ -1,0 +1,190 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Remidi Basket</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-color: black;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+        }
+        .earth {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: url('https://example.com/earth_texture.jpg') no-repeat center center;
+            background-size: cover;
+            animation: rotate 60s linear infinite;
+        }
+        @keyframes rotate {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+        .stars {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: transparent;
+            z-index: -1;
+            animation: twinkle 2s infinite;
+        }
+        .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: white;
+            opacity: 0.8;
+            animation: blink 1.5s infinite alternate;
+        }
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+        @keyframes blink {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+        .btn {
+            color: white;
+            background-color: #444;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            animation: boxColorChange 3s infinite;
+        }
+        @keyframes boxColorChange {
+            0% { background-color: red; }
+            25% { background-color: yellow; }
+            50% { background-color: green; }
+            75% { background-color: blue; }
+            100% { background-color: purple; }
+        }
+        .loader {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        .checkmark {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: block;
+            stroke-width: 2;
+            stroke: #4caf50;
+            stroke-miterlimit: 10;
+            margin: 10% auto;
+            box-shadow: inset 0px 0px 0px #4caf50;
+            animation: fill .4s ease-in-out .4s forwards, scale .3s ease-in-out .9s both;
+        }
+        .checkmark__circle {
+            stroke-dasharray: 166;
+            stroke-dashoffset: 166;
+            stroke-width: 2;
+            stroke-miterlimit: 10;
+            stroke: #4caf50;
+            fill: #fff;
+            animation: stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+        }
+        .checkmark__check {
+            transform-origin: 50% 50%;
+            stroke-dasharray: 48;
+            stroke-dashoffset: 48;
+            animation: stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.6s forwards;
+        }
+        @keyframes stroke {
+            100% { stroke-dashoffset: 0; }
+        }
+        @keyframes scale {
+            0%, 100% { transform: none; }
+            50% { transform: scale3d(1.1, 1.1, 1); }
+        }
+        @keyframes fill {
+            100% { box-shadow: inset 0px 0px 0px 30px #4caf50; }
+        }
+        .message {
+            color: #4caf50;
+            font-size: 1.5em;
+            text-align: center;
+            margin-top: 10px;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="stars">
+        <!-- Generate stars dynamically using JavaScript -->
+        <script>
+            for (let i = 0; i < 100; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.left = Math.random() * 100 + '%';
+                document.querySelector('.stars').appendChild(star);
+            }
+        </script>
+    </div>
+    <div class="earth"></div>
+    <div class="login-box">
+        <div style="text-align: center;">
+            <h2>Verifikasi</h2>
+            <form id="verificationForm" action="/login" method="post">
+                <div class="textbox">
+                    <input type="text" id="nama" name="nama" placeholder="Nama" required>
+                </div>
+                <button type="submit" class="btn">Menonton</button>
+            </form>
+        </div>
+    </div>
+    <div class="loader hidden" id="loader">
+        <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+            <circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none"></circle>
+            <path class="checkmark__check" fill="none" d="M14 27l7 7 16-16"></path>
+        </svg>
+        <div class="message">Selamat Menyaksikan</div>
+    </div>
+    <script>
+        document.getElementById('verificationForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const nama = document.getElementById('nama').value;
+
+            // Sembunyikan semua kotak dan tulisan
+            document.querySelector('.login-box').classList.add('hidden');
+
+            // Tampilkan loader
+            document.getElementById('loader').classList.remove('hidden');
+
+            // Proses verifikasi
+            setTimeout(function() {
+                if (nama) {
+                    // Jika berhasil, buka link yang diberikan
+                    window.location.href = 'https://youtu.be/5SJpbOYaOzM?feature=shared';
+                } else {
+                    alert('Mohon isi semua kolom.');
+                    document.querySelector('.login-box').classList.remove('hidden');
+                    document.getElementById('loader').classList.add('hidden');
+                }
+            }, 1000); // Simulasi waktu loading 1 detik
+        });
+    </script>
+</body>
+</html>
